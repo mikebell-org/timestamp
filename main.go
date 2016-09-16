@@ -6,6 +6,10 @@ type Timestamp float64
 
 const nano = 1000000000.0
 
+func Now() Timestamp {
+	return New(time.Now())
+}
+
 func New(t time.Time) Timestamp {
 	return Timestamp(Timestamp(t.UnixNano()) / nano)
 }
