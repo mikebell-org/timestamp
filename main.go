@@ -1,6 +1,9 @@
 package timestamp
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 type Timestamp float64
 
@@ -22,4 +25,19 @@ func (t Timestamp) Time() time.Time {
 
 func (t Timestamp) String() string {
 	return t.Time().String()
+}
+
+func (t *Timestamp) UnmarshalJSON(b []byte) (err error) {
+	var f float64
+	if len(b) == 0 {
+		return
+	}
+	if b[0] == '"' {
+		b = b[1 : len(b)-1]
+	}
+	if f, err = strconv.ParseFloat(string(b), 10); err != nil {
+		return err
+	}
+	*t = Timestamp(f)
+	return nil
 }
